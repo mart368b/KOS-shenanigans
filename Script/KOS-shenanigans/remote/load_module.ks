@@ -26,7 +26,7 @@ global content to Lexicon().
 // NOTE: Currently no check is peformed to see for cyclic dependancies
 function parse {
     parameter url.
-    if not content:contains(url) {
+    if not content:hasKey(url) {
         local file to List().
 
         if not exists(url) {
@@ -55,7 +55,7 @@ function parse {
         return file:join("
         ").
     }else {
-        return "";
+        return "".
     }
 }
 

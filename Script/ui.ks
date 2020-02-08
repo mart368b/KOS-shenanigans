@@ -1,5 +1,5 @@
 // Import the remote actions
-import 0:/res/remote.ks.
+import 0:/KOS-shenanigans/remote/invoce_remote.ks.
 
 // Create a dropdown menu over all the files in the current directory
 function createFileSelect {

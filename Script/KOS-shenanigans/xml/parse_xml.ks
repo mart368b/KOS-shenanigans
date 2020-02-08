@@ -1,4 +1,4 @@
-import 0:/KOS-shenanigans/remote/remote.ks.
+import 0:/KOS-shenanigans/remote/invoce_remote.ks.
 import 0:/KOS-shenanigans/err.ks
 
 parameter args.
