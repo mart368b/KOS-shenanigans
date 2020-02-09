@@ -63,7 +63,7 @@ function createMainUi {
 
 remoteInvocation(
     "xml",
-    "0:/out/xml.ks",
+    "0:/out/xml_ui.ks",
     List(
         "0:/ui/gui.xml"
     )

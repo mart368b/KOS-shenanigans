@@ -1,2 +1,8 @@
 <gui width=200 height=300 show>
+    <label text='Hello World!'/>
+    <label text='Hello World!'/>
+    <label text='Hello World!'/>
+    <label text='Hello World!'/>
+    <label text='Hello World!'/>
+    <label text='Hello World!'/>
 </gui>
