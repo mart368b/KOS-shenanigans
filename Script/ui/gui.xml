@@ -1,8 +1,8 @@
 <gui width=200 height=300 show>
     <label text='Hello World!'/>
-    <label text='Hello World!'/>
-    <label text='Hello World!'/>
-    <label text='Hello World!'/>
-    <label text='Hello World!'/>
-    <label text='Hello World!'/>
+    <button text='Click me' onclick=click@/>
+    <checkbox text='Click me' on=False onclick=click@/>
+    <hlayout>
+        <label text='Hello World!'/>
+    </hlayout>
 </gui>

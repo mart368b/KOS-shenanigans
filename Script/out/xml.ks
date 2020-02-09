@@ -63,11 +63,11 @@
         
             local start to 1.
             if isEnd {
-                set start to 2.
+                set start to start + 1.
             }
             local end to trimmed:length - 2.
-            if isEnd {
-                set end to trimmed:length - 3.
+            if isBlockEnd {
+                set end to end - 1.
             }
             local iter to trimmed:substring(start, end):split(" "):iterator.
             iter:next().
@@ -81,9 +81,9 @@
                     local value to part[1].
                     if value:contains("'") {
                         local current to "".
-                        until not iter:next() or current:contains("'") {
+                        until current:contains("'") or not iter:next() {
                             set current to iter:value.
-                            set value to value + current.
+                            set value to value + " " + current.
                         }
                     }
                     attributes:add(part[0], value).
@@ -92,7 +92,6 @@
                         attributes:add(part[0], "").
                     }
                 }
-                
             }
         
             return Lexicon(
@@ -114,7 +113,6 @@
             local xmlStack to Stack().
             local elmStack to Stack().
             until not lines:next() {
-                print(lines:value).
                 local element to parse_line(lines:value).
                 if element:isEnd and element:isBlockEnd {
                     crash("Found double end element").
