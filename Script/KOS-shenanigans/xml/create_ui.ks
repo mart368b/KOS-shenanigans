@@ -41,8 +41,6 @@ function haskey {
 function createChild {
     parameter parent.
     parameter child.
-
-    print(child).
     local attr to cast(child:tag, child:attributes, childCast).
     return childInit[child:tag](parent, attr).
 }
@@ -77,14 +75,3 @@ function createGUI {
     parameter uiPath.
     return sax_parser(uiPath, createChild@, createRoot@).
 }
-
-global isDone to False.
-function click {
-    print("-----------------------").
-}
-
-registerFunction("click", click@).
-global ui to createGUI(args[0]).
-global u to ui[0].
-wait until isDone.
-print("Complete").

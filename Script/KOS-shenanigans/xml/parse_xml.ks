@@ -12,6 +12,37 @@ function nextLine {
     }
 }
 
+function parse_attributes {
+    parameter line.
+
+    local iter to line:split(" "):iterator.
+
+    local attributes to Lexicon().
+    until not iter:next() {
+        local part to iter:value:split("=").
+        if part[0]:trim():length = 0 {
+            crash("Found zero size attribute key").
+        }
+        if part:length = 2 {
+            local value to part[1].
+            if value:contains("'") {
+                local current to "".
+                until current:contains("'") or not iter:next() {
+                    set current to iter:value.
+                    set value to value + " " + current.
+                }
+            }
+            attributes:add(part[0]:trim(), value).
+        }else {
+            if part[0]:trim():length <> 0 {
+                attributes:add(part[0], "").
+            }
+        }
+    }
+    
+    return attributes.
+}
+
 function parse_line {
     parameter line.
     
@@ -28,30 +59,12 @@ function parse_line {
     if isBlockEnd {
         set end to end - 1.
     }
-    local iter to trimmed:substring(start, end):split(" "):iterator.
-    iter:next().
-    local tag to iter:value.
 
-    local attributes to Lexicon().
+    local inner_line to trimmed:substring(start, end).
+    local tag_start to inner_line:find(" ").
+    local tag to inner_line:substring(start, tag_start).
 
-    until not iter:next() {
-        local part to iter:value:split("=").
-        if part:length = 2 {
-            local value to part[1].
-            if value:contains("'") {
-                local current to "".
-                until current:contains("'") or not iter:next() {
-                    set current to iter:value.
-                    set value to value + " " + current.
-                }
-            }
-            attributes:add(part[0], value).
-        }else {
-            if part[0]:trim():length <> 0 {
-                attributes:add(part[0], "").
-            }
-        }
-    }
+    local attributes to parse_attributes(inner_line:substring(tag_start, end)).
 
     return Lexicon(
         "isEnd", isEnd,

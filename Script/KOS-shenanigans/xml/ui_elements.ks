@@ -18,6 +18,16 @@ function toBoolean {
     return value:tolower() = "true".
 }
 
+function toList {
+    parameter value.
+    local items to value:split(",").
+    local l to List().
+    for item in items {
+        l:add(item:trim()).
+    }
+    return l.
+}
+
 function accept {
     parameter value.
     return value.
@@ -66,7 +76,11 @@ global childCast to Lexicon(
         "onconfirm", accept@,
         "tooltip", toString@
     ),
-    "popupmenu", Lexicon(),
+    "popupmenu", Lexicon(
+        "options", toList@,
+        "onchange", accept@,
+        "maxvisible", toScalar@
+    ),
     "hslide", Lexicon(
         "init", toScalar@,
         "min", toScalar@,
@@ -95,6 +109,8 @@ global childCast to Lexicon(
         "onradiochange", accept@
     ),
     "scrollbox", Lexicon(
+        "halways", toBoolean@,
+        "valways", toBoolean@,
         "onradiochange", accept@
     ),
     "spacing", Lexicon(
@@ -187,7 +203,13 @@ global childInit to Lexicon(
     "popupmenu", {
         parameter parent, attr.
 
-        return parent:addPopupmenu().
+        global popupmenu to parent:addPopupmenu().
+
+        haskey("options", attr, {set textfield:options to attr:options.}).
+        haskey("maxvisible", attr, {set textfield:maxvisible to attr:maxvisible.}).
+        haskey("onchange", attr, {set textfield:onchange to uiFunctions[attr:onchange]@.}).
+
+        return popupmenu.
     },
     "hslider", {
         parameter parent, attr.
@@ -275,6 +297,8 @@ global childInit to Lexicon(
     "scrollbox", {
         parameter parent, attr.
         global box to parent:addVBox.
+        haskey("valways", attr, {set vslider:valways to attr:valways.}).
+        haskey("halways", attr, {set vslider:halways to attr:halways.}).
         haskey("onradiochange", attr, {set box:onradiochange to uiFunctions[attr:onradiochange]@.}).
 
         return box.
