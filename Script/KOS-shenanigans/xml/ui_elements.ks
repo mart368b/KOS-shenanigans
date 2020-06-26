@@ -1,23 +1,28 @@
+// Cast for scalar values
 function toScalar {
     parameter value.
     return value:toScalar().
 }
 
+// Cast for numbers values
 function toNumber {
     parameter value.
     return value:toScalar().
 }
 
+// Cast for string values
 function toString {
     parameter value.
     return value:substring(1, value:length - 2).
 }
 
+// Cast for boolean values
 function toBoolean {
     parameter value.
     return value:tolower() = "true".
 }
 
+// Cast for list values
 function toList {
     parameter value.
     local items to value:split(",").
@@ -28,11 +33,13 @@ function toList {
     return l.
 }
 
+// Cast allowing for any value to pass
 function accept {
     parameter value.
     return value.
 }
 
+// Set casting used by GUI element
 global guiCast to Lexicon(
     "gui", Lexicon(
         "width", toScalar@,
@@ -47,6 +54,7 @@ global guiCast to Lexicon(
     )
 ).
 
+// Set casting for any child elements of the gui element
 global childCast to Lexicon(
     "label", Lexicon(
         "text", toString@,
@@ -118,6 +126,7 @@ global childCast to Lexicon(
     )
 ).
 
+// Container for initialzing child values based on provided attributes
 global childInit to Lexicon(
     "label", {
         parameter parent, attr.

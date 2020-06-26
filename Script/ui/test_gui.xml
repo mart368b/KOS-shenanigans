@@ -1,0 +1,6 @@
+<gui width=200 height=300 show>
+    <label text='Hello World!'/>
+    <hlayout>
+        <button text='Close' onclick=close@/>
+    </hlayout>
+</gui>

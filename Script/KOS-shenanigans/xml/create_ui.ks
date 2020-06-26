@@ -1,8 +1,6 @@
 import 0:/KOS-shenanigans/xml/parse_xml.ks.
 import 0:/KOS-shenanigans/xml/ui_elements.ks.
 
-parameter args.
-
 global uiFunctions to Lexicon().
 
 function registerFunction {
@@ -11,12 +9,12 @@ function registerFunction {
     uiFunctions:add(name + "@", func).
 }
 
+// Allow for generic casting of attributes using the attribute name
 function cast {
     parameter tag.
     parameter attr.
     parameter casts.
 
-    print(tag).
     local c to casts[tag].
     for k in attr:keys {
         if c:hassuffix(k) {
@@ -26,6 +24,7 @@ function cast {
     return attr.
 }
 
+// Generic if else statement
 function haskey {
     parameter tag.
     parameter attr.
@@ -38,6 +37,7 @@ function haskey {
     }
 }
 
+// Create a child element for a given gui element
 function createChild {
     parameter parent.
     parameter child.
@@ -45,6 +45,7 @@ function createChild {
     return childInit[child:tag](parent, attr).
 }
 
+// Create the base gui element
 function createRoot {
     parameter elm.
 
@@ -71,6 +72,7 @@ function createRoot {
     return ui.
 }
 
+// Create a gui from a xml file
 function createGUI {
     parameter uiPath.
     return sax_parser(uiPath, createChild@, createRoot@).
