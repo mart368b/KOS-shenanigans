@@ -50,7 +50,7 @@
         
             local hasNext to lines:next. 
             if not hasNext and not canEnd {
-                print("Unexpected EOF").
+                crash("Unexpected EOF").
             }else {
                 return lines:value.
             }
@@ -632,7 +632,6 @@
                     parameter state.
                     parameter element.
         
-                    print(element).
                     local elm to createRoot(element).
                     state:elements:add(elm).
         
@@ -654,6 +653,14 @@
                     if not element:isBlockEnd {
                         state:elmStack:push(elm).
                     }
+                    return state.
+                },
+                { // End element
+                    parameter state.
+                    parameter element.
+                    
+                    state:elmStack:pop().
+        
                     return state.
                 }
             ):elements.

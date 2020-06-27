@@ -7,7 +7,7 @@ function nextLine {
 
     local hasNext to lines:next. 
     if not hasNext and not canEnd {
-        print("Unexpected EOF").
+        crash("Unexpected EOF").
     }else {
         return lines:value.
     }

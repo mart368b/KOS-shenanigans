@@ -85,7 +85,6 @@ function createGUI {
             parameter state.
             parameter element.
 
-            print(element).
             local elm to createRoot(element).
             state:elements:add(elm).
 
