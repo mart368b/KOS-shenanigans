@@ -101,6 +101,9 @@ wait until isDone.
 u:hide().
 ```
 The above example can also be found in test_ui.ks
+This results in a ui looking like this:
+
+![Generated gui](doc/img/test_ui.png)
 
 # Supported UI Elements
 ### Table of content
