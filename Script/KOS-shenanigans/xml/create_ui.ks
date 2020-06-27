@@ -75,5 +75,47 @@ function createRoot {
 // Create a gui from a xml file
 function createGUI {
     parameter uiPath.
-    return sax_parser(uiPath, createChild@, createRoot@).
+    return parse_xml(
+        uiPath,
+        Lexicon(
+            "elements", List(),
+            "elmStack", Stack()
+        ),
+        { // Start root element
+            parameter state.
+            parameter element.
+
+            print(element).
+            local elm to createRoot(element).
+            state:elements:add(elm).
+
+            if not element:isBlockEnd {
+                state:elmStack:push(elm).
+            }
+            return state.
+        },
+        { // Start child element
+            parameter state.
+            parameter element.
+            
+            // Find the parent o the element
+            local parent to state:elmStack:peek().
+
+            local elm to createChild(parent, element).
+            state:elements:add(elm).
+
+            if not element:isBlockEnd {
+                state:elmStack:push(elm).
+            }
+            return state.
+        },
+        { // End element
+            parameter state.
+            parameter element.
+            
+            state:elmStack:pop().
+
+            return state.
+        }
+    ):elements.
 }

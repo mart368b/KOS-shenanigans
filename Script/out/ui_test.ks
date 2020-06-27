@@ -147,17 +147,21 @@
             ).
         }
         
-        // Parse the content of a file xml into kos gui elements
-        function sax_parser {
+        // Parse the content of a file xml
+        // The parser is made as a sax parser
+        // When an element is encounterede onStartRootElement, onStartChildElement or onEndElement is called
+        // The internal state can be changed by returning a new state in any of the given functions
+        function parse_xml {
             parameter file.
-            parameter createChild.
-            parameter createRoot.
+            parameter state.
+            parameter onStartRootElement. // (state, element) -> state
+            parameter onStartChildElement. // (state, element) -> state
+            parameter onEndElement. // (state, element) -> state
         
-            local elements to List().
+            local current_state to state.
             local file to open(file).
             local lines to file:readall():iterator().
             local xmlStack to Stack().
-            local elmStack to Stack().
             // Parse all the lines in the file
             until not lines:next() {
                 local line to lines:value.
@@ -176,31 +180,30 @@
                     }
                     // Do xml stuff
                     if element:isEnd {
-                        elmStack:pop().
+                        set current_state to onEndElement(current_state, element).
+        
                         local parent to xmlStack:pop().
                         if not element:tag = parent:tag{
                             crash("End tag does not match start tag").
                         }
                     }else {
                         // Create the new element
-                        local elm to "".
-                        if not xmlStack:empty{
-                            set elm to createChild(elmStack:peek(), element).
-                        } else{
-                            set elm to createRoot(element).
+                        if xmlStack:length <> 0 {
+                            set current_state to onStartChildElement(current_state, element).
+                        }else {
+                            set current_state to onStartRootElement(current_state, element).
                         }
-                        elements:add(elm).
+        
                         if not element:isBlockEnd {
                             xmlStack:push(element).
-                            elmStack:push(elm).
                         }
                     }
                 }
             }
-            if elmStack:length() <> 0 or xmlStack:length() <> 0 {
+            if xmlStack:length() <> 0 {
                 crash("Missing closing tags").
             }
-            return elements.
+            return current_state.
         }
         
         // Cast for scalar values
@@ -605,7 +608,49 @@
         // Create a gui from a xml file
         function createGUI {
             parameter uiPath.
-            return sax_parser(uiPath, createChild@, createRoot@).
+            return parse_xml(
+                uiPath,
+                Lexicon(
+                    "elements", List(),
+                    "elmStack", Stack()
+                ),
+                { // Start root element
+                    parameter state.
+                    parameter element.
+        
+                    print(element).
+                    local elm to createRoot(element).
+                    state:elements:add(elm).
+        
+                    if not element:isBlockEnd {
+                        state:elmStack:push(elm).
+                    }
+                    return state.
+                },
+                { // Start child element
+                    parameter state.
+                    parameter element.
+                    
+                    // Find the parent o the element
+                    local parent to state:elmStack:peek().
+        
+                    local elm to createChild(parent, element).
+                    state:elements:add(elm).
+        
+                    if not element:isBlockEnd {
+                        state:elmStack:push(elm).
+                    }
+                    return state.
+                },
+                { // End element
+                    parameter state.
+                    parameter element.
+                    
+                    state:elmStack:pop().
+        
+                    return state.
+                }
+            ):elements.
         }
         
         
@@ -626,5 +671,6 @@
         
         // Wait until the quit button is pressed
         wait until isDone.
+        
+        // Close the ui
         u:hide().
-        print("Complete").
