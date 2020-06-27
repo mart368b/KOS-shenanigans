@@ -154,10 +154,24 @@
         function parse_xml {
             parameter file.
             parameter state.
-            parameter onStartRootElement. // (state, element) -> state
-            parameter onStartChildElement. // (state, element) -> state
-            parameter onEndElement. // (state, element) -> state
+            parameter onStartRootElement is { // Start root element
+                parameter state.
+                parameter element.
         
+                return state.
+            }.
+            parameter onStartChildElement is { // Start root element
+                parameter state.
+                parameter element.
+        
+                return state.
+            }.
+            parameter onEndElement is { // Start root element
+                parameter state.
+                parameter element.
+        
+                return state.
+            }.
             local current_state to state.
             local file to open(file).
             local lines to file:readall():iterator().
@@ -640,14 +654,6 @@
                     if not element:isBlockEnd {
                         state:elmStack:push(elm).
                     }
-                    return state.
-                },
-                { // End element
-                    parameter state.
-                    parameter element.
-                    
-                    state:elmStack:pop().
-        
                     return state.
                 }
             ):elements.

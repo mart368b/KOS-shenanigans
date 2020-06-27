@@ -5,6 +5,7 @@ You're more than welcome to take whatever you want
 # Overview
  * Simple kos to kos compiler (compiler.ks)
  * Files as functions (invoce_remote.ks)
+ * Sax xml parser (parse_xml.ks)
  * ui library based on a xml format (create_ui.ks)
 
 # Module compilation
@@ -32,6 +33,31 @@ after compiling the invoce_remote use **remoteInvocation(namespace: string, file
 
 Inside the other file, arguments can be taken using the __parameter__ keyword as ususal.
 To return a value use the returnResult function. This returns a serializable value to whoever called it using the removeInvocation function.
+
+# Xml parser
+The parser works as a sax parser. This mean as the elements in the xml file is encountered functions are called to process these values.
+
+```kos
+// Set this to the path of the xml file
+local file_path to "0:/ui/test_gui.xml"
+parse_xml(
+    file_path,
+    0, // Start count
+    { // Start root element
+        parameter state.
+        parameter element.
+
+        return state + 1.
+    },
+    { // Start child element
+        parameter state.
+        parameter element.
+
+        return state + 1.
+    }
+)
+```
+The above example will count the number of elements in the xml file
 
 # UI library
 KOS has a build-in GUI library. However making the ui is very clomsy and easily lead to unreadable code. To that end i have written a xml parser that can generate the you for you. The parser supports all types as given in the [official documentation](https://ksp-kos.github.io/KOS/structures/gui.html?highlight=gui)
