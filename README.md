@@ -57,10 +57,10 @@ parse_xml(
     }
 )
 ```
-The above example will count the number of elements in the xml file
+The above example will count the number of elements in the xml file.
 
 # UI library
-KOS has a build-in GUI library. However making the ui is very clomsy and easily lead to unreadable code. To that end i have written a xml parser that can generate the you for you. The parser supports all types as given in the [official documentation](https://ksp-kos.github.io/KOS/structures/gui.html?highlight=gui)
+KOS has a build-in GUI library. However making the ui is very clomsy and easily lead to unreadable code. To that end i have written a xml parser that can generate the you for you. The parser supports all types as given in the [official documentation](https://ksp-kos.github.io/KOS/structures/gui.html?highlight=gui).
 
 ## GUi example
 This creates a simple ui with a single button
@@ -100,7 +100,7 @@ wait until isDone.
 // Close the ui
 u:hide().
 ```
-The above example can also be found in test_ui.ks
+The above example can also be found in test_ui.ks.
 This results in a ui looking like this:
 
 ![Generated gui](doc/img/ui_example.png)

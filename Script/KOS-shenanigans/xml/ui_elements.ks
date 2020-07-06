@@ -205,7 +205,7 @@ global childInit to Lexicon(
         ).
         haskey("onchange", attr, {set textfield:onchange to uiFunctions[attr:onchange]@.}).
         haskey("onconfirm", attr, {set textfield:onconfirm to uiFunctions[attr:onconfirm]@.}).
-        haskey("tooltip", attr, {set textfield:tooltip to uiFunctions[attr:tooltip]@.}).
+        haskey("tooltip", attr, {set textfield:tooltip to attr:tooltip.}).
 
         return textfield.
     },
