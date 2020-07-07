@@ -226,4 +226,4 @@ Allow children
 ### [spacing](https://ksp-kos.github.io/KOS/structures/gui_widgets/spacing.html)
 | name | type                                 |required                        |
 |------|--------------------------------------|--------------------------------|
-|amount|<span style="color:yellow">func</span>|<span style="color:red">*</span>|
+|amount|<span style="color:teal">scalar</span>|<span style="color:red">*</span>|

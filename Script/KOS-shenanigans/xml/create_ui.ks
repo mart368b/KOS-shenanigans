@@ -54,7 +54,7 @@ function createRoot {
     }
     local attr to cast(elm:tag, elm:attributes, guiCast).
     set attr:width to 100.
-    global ui to haskey(
+    local ui to haskey(
         "height",
         attr,
         {return Gui(attr:width, attr:height).},
